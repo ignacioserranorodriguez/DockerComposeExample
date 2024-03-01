@@ -1,0 +1,42 @@
+version: '1'
+services:
+  
+  #-------------------------------------------------------------------------
+  # SERVICIO SERVIDOR WEB (php:7.4-apache con mysqli y código WP descargado
+  #-------------------------------------------------------------------------
+  web:
+    # IMAGEN USADA
+    image: ignacioserranorodriguez/a63
+    # NOMBRE QUE LE VOY A DAR AL CONTENEDOR
+    container_name: web
+    # REDIRECCIÓN DE PUERTOS
+    ports:
+      - 8080:80     
+    # SERVICIOS QUE TIENEN QUE ARRANCAR ANTES DE ARRANCAR ESTE
+    depends_on:
+     - datos
+
+  #--------------------------------------------------
+  # SERVICIO SERVIDOR DE BASE DE DATOS MARIADB
+  #--------------------------------------------------
+
+  # NOMBRE DEL SERVICIO
+  datos:
+    # IMAGEN USADA
+    image: mariadb
+    # NOMBRE QUE LE VOY A DAR AL CONTENEDOR
+    container_name: bd
+    # LISTA DE VALORES DE ENTORNO CON SUS VALORES
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=mariadb
+    # REDIRECCIÓN DE PUERTOS
+    ports:
+      - 3306:3306
+
+volumes:
+  data:
+    # TIPO DE DRIVER
+    driver: local
